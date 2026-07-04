@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nexum Web — Estudi de disseny i desenvolupament web</title>
+<meta name="description" content="Nexum Web. Creem webs a mida per a negocis que volen semblar el que són. Disseny, desenvolupament i entrega en 24h. Des de 350€.">
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<!-- Favicon -->
+<link rel="icon" type="image/svg+xml" href="assets/logos/5-nexum-icono-transparente.svg">
+
+<style>
+/* ============================================================
+   NEXUM WEB — Editorial Luxe
+   ============================================================ */
+
+:root{
+  --cream:#F4F0E7;
+  --cream-2:#EAE4D7;
+  --ink:#14203A;
+  --ink-2:#0B1322;
+  --terra:#D9714E;
+  --terra-deep:#C25B38;
+  --paper:#F7F4EF;
+  --muted:rgba(20,32,58,.56);
+  --muted-2:rgba(20,32,58,.36);
+  --line:rgba(20,32,58,.14);
+  --line-dark:rgba(247,244,239,.14);
+  --cream-muted:rgba(247,244,239,.60);
+
+  --f-serif:'Fraunces', Georgia, serif;
+  --f-sans:'Manrope', -apple-system, system-ui, sans-serif;
+
+  --ease:cubic-bezier(.22,1,.36,1);
+  --ease-2:cubic-bezier(.65,.05,.36,1);
+
+  --pad:clamp(20px,5vw,80px);
+  --maxw:1440px;
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+html{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+html.lenis,html.lenis body{height:auto}
+.lenis.lenis-smooth{scroll-behavior:auto!important}
+.lenis.lenis-stopped{overflow:hidden}
+
+body{
+  font-family:var(--f-sans);
+  background:var(--ink-2);
+  color:var(--cream);
+  font-weight:400;
+  line-height:1.5;
+  overflow-x:hidden;
+  cursor:none;
+}
+@media (hover:none){body{cursor:auto}}
+
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+::selection{background:var(--terra);color:var(--paper)}
+
+/* ---------- Custom cursor ---------- */
+.cursor{position:fixed;top:0;left:0;width:7px;height:7px;border-radius:50%;
+  background:var(--terra);pointer-events:none;z-index:9999;
+  transform:translate(-50%,-50%);transition:width .3s var(--ease),height .3s var(--ease),background .3s}
+.cursor-ring{position:fixed;top:0;left:0;width:38px;height:38px;border-radius:50%;
+  border:1px solid rgba(247,244,239,.35);pointer-events:none;z-index:9998;
+  transform:translate(-50%,-50%);transition:width .35s var(--ease),height .35s var(--ease),border-color .35s,background .35s}
+body.cur-hover .cursor{width:0;height:0}
+body.cur-hover .cursor-ring{width:64px;height:64px;background:rgba(217,113,78,.10);border-color:rgba(217,113,78,.5)}
+body.cur-dark .cursor-ring{border-color:rgba(20,32,58,.25)}
+@media (hover:none){.cursor,.cursor-ring{display:none}}
+
+/* ---------- Loader ---------- */
+#loader{position:fixed;inset:0;z-index:10000;background:var(--ink-2);
+  display:flex;align-items:center;justify-content:center;flex-direction:column;gap:26px}
+#loader .rings{width:76px;height:52px}
+#loader .rings circle{fill:none;stroke-width:5}
+#loader .l-count{font-family:var(--f-sans);font-weight:300;font-size:13px;letter-spacing:.35em;
+  color:var(--cream-muted);text-transform:uppercase}
+.loader-done{pointer-events:none}
+
+/* ---------- Nav ---------- */
+.nav{position:fixed;top:0;left:0;width:100%;z-index:900;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:22px var(--pad);mix-blend-mode:difference}
+.nav.solid{mix-blend-mode:normal}
+.nav-logo{display:flex;align-items:center;gap:12px;font-family:var(--f-serif);
+  font-size:23px;font-weight:500;letter-spacing:-.01em;color:var(--paper)}
+.nav-logo svg{width:40px;height:27px;overflow:visible}
+.nav-logo svg circle{fill:none;stroke-width:5.5}
+.nav-right{display:flex;align-items:center;gap:clamp(20px,3vw,44px)}
+.nav-menu{display:flex;gap:clamp(18px,2.4vw,36px)}
+.nav-menu a{font-size:13px;font-weight:500;letter-spacing:.02em;color:var(--paper);
+  position:relative;padding:4px 0}
+.nav-menu a::after{content:'';position:absolute;left:0;bottom:0;width:100%;height:1px;
+  background:currentColor;transform:scaleX(0);transform-origin:right;transition:transform .5s var(--ease)}
+.nav-menu a:hover::after{transform:scaleX(1);transform-origin:left}
+.nav-cta{font-size:13px;font-weight:600;color:var(--paper);border:1px solid rgba(247,244,239,.4);
+  padding:11px 22px;border-radius:100px;transition:background .4s var(--ease),color .4s var(--ease)}
+.nav-cta:hover{background:var(--paper);color:var(--ink)}
+.nav-burger{display:none}
+
+/* ---------- Shared layout ---------- */
+.section{position:relative;padding:clamp(90px,13vh,180px) var(--pad)}
+.wrap{max-width:var(--maxw);margin:0 auto}
+.eyebrow{font-size:12px;font-weight:600;letter-spacing:.3em;text-transform:uppercase;
+  color:var(--terra);display:inline-flex;align-items:center;gap:12px}
+.eyebrow::before{content:'';width:26px;height:1px;background:var(--terra);display:inline-block}
+
+/* reveal utils */
+.line-mask{overflow:hidden;display:block}
+.line-in{display:block}
+.fade{opacity:0;transform:translateY(30px)}
+.fade-i{opacity:0}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+#hero{min-height:100svh;display:flex;flex-direction:column;justify-content:center;
+  padding:140px var(--pad) 60px;position:relative;overflow:hidden;
+  background:radial-gradient(120% 120% at 78% 8%, #16233B 0%, #0B1322 52%, #080E1A 100%)}
+.hero-grain{position:absolute;inset:0;opacity:.05;pointer-events:none;z-index:1;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.hero-rings{position:absolute;top:50%;right:-4vw;transform:translateY(-50%);
+  width:min(60vw,720px);height:min(60vw,720px);z-index:1;pointer-events:none;opacity:.9}
+.hero-rings svg{width:100%;height:100%;overflow:visible}
+.hero-rings circle{fill:none;stroke-width:1.1}
+.hero-inner{position:relative;z-index:3;max-width:var(--maxw);margin:0 auto;width:100%}
+.hero-top{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:34px;gap:24px;flex-wrap:wrap}
+.hero-top .eyebrow{opacity:.95}
+.hero-loc{font-size:12.5px;color:var(--cream-muted);font-weight:400;letter-spacing:.04em}
+h1.hero-h{font-family:var(--f-serif);font-weight:400;
+  font-size:clamp(2.9rem,8.3vw,8.4rem);line-height:.98;letter-spacing:-.025em;
+  color:var(--paper)}
+h1.hero-h .it{font-style:italic;font-weight:300;color:var(--terra)}
+.hero-sub{display:flex;justify-content:space-between;align-items:flex-end;
+  margin-top:46px;gap:40px;flex-wrap:wrap}
+.hero-sub p{max-width:41ch;font-size:clamp(15px,1.25vw,18px);color:var(--cream-muted);
+  font-weight:400;line-height:1.62}
+.hero-scroll{display:flex;align-items:center;gap:12px;font-size:11px;letter-spacing:.25em;
+  text-transform:uppercase;color:var(--cream-muted);white-space:nowrap}
+.hero-scroll .bar{width:44px;height:1px;background:var(--cream-muted);position:relative;overflow:hidden}
+.hero-scroll .bar::after{content:'';position:absolute;inset:0;background:var(--terra);
+  transform:translateX(-100%);animation:scrollbar 2.4s var(--ease) infinite}
+@keyframes scrollbar{0%{transform:translateX(-100%)}55%,100%{transform:translateX(100%)}}
+
+/* ============================================================
+   MARQUEE
+   ============================================================ */
+.marquee{background:var(--terra);color:var(--paper);padding:22px 0;overflow:hidden;
+  white-space:nowrap;border-top:1px solid var(--terra-deep)}
+.marquee-track{display:inline-flex;gap:0;will-change:transform}
+.marquee-track span{font-family:var(--f-serif);font-style:italic;font-weight:400;
+  font-size:clamp(1.4rem,3vw,2.3rem);padding:0 34px;display:inline-flex;align-items:center;gap:34px}
+.marquee-track span::after{content:'';width:7px;height:7px;border-radius:50%;background:var(--paper);display:inline-block}
+
+/* ============================================================
+   MANIFESTO
+   ============================================================ */
+#manifest{background:var(--paper);color:var(--ink)}
+.manifest-h{font-family:var(--f-serif);font-weight:300;
+  font-size:clamp(1.7rem,4.2vw,3.9rem);line-height:1.22;letter-spacing:-.015em;
+  max-width:20ch}
+.manifest-h b{font-weight:500}
+.manifest-h .w{display:inline-block}
+.manifest-foot{margin-top:70px;display:flex;justify-content:space-between;
+  align-items:flex-end;gap:30px;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:26px}
+.manifest-foot p{font-size:14px;color:var(--muted);max-width:34ch;line-height:1.6}
+
+/* ============================================================
+   SERVICES
+   ============================================================ */
+#serveis{background:var(--paper);color:var(--ink);padding-top:0}
+.serv-head{display:flex;justify-content:space-between;align-items:flex-end;
+  gap:30px;flex-wrap:wrap;margin-bottom:24px}
+.serv-head h2{font-family:var(--f-serif);font-weight:400;
+  font-size:clamp(2rem,5vw,3.6rem);line-height:1.02;letter-spacing:-.02em}
+.serv-head p{font-size:15px;color:var(--muted);max-width:30ch;line-height:1.6}
+.serv-list{border-top:1px solid var(--line)}
+.serv-item{border-bottom:1px solid var(--line);padding:clamp(24px,3.4vw,42px) 0;
+  display:grid;grid-template-columns:90px 1fr auto;gap:24px;align-items:start;
+  position:relative;transition:padding-left .5s var(--ease)}
+.serv-item .s-num{font-family:var(--f-sans);font-size:14px;font-weight:500;color:var(--terra);padding-top:8px}
+.serv-item .s-body{max-width:640px}
+.serv-item h3{font-family:var(--f-serif);font-weight:400;font-size:clamp(1.5rem,3.4vw,2.5rem);
+  line-height:1.05;letter-spacing:-.015em;transition:transform .5s var(--ease)}
+.serv-item .s-desc{font-size:14.5px;color:var(--muted);line-height:1.6;margin-top:14px;
+  max-width:52ch;overflow:hidden;max-height:0;opacity:0;transition:max-height .55s var(--ease),opacity .5s var(--ease),margin-top .5s var(--ease)}
+.serv-item .s-tags{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;padding-top:10px}
+.serv-item .s-tags span{font-size:11.5px;letter-spacing:.04em;color:var(--muted);
+  border:1px solid var(--line);border-radius:100px;padding:5px 12px;white-space:nowrap}
+.serv-item::before{content:'';position:absolute;left:-24px;top:0;bottom:0;width:2px;background:var(--terra);
+  transform:scaleY(0);transform-origin:top;transition:transform .5s var(--ease)}
+.serv-item:hover{padding-left:24px}
+.serv-item:hover::before{transform:scaleY(1)}
+.serv-item:hover h3{transform:translateX(4px);color:var(--terra)}
+.serv-item:hover .s-desc{max-height:120px;opacity:1;margin-top:14px}
+
+/* ============================================================
+   WORK / PORTFOLIO
+   ============================================================ */
+#work{background:var(--ink-2);color:var(--cream)}
+.work-head{display:flex;justify-content:space-between;align-items:flex-end;
+  gap:30px;flex-wrap:wrap;margin-bottom:clamp(40px,6vw,74px)}
+.work-head h2{font-family:var(--f-serif);font-weight:400;color:var(--paper);
+  font-size:clamp(2rem,5vw,3.6rem);line-height:1.02;letter-spacing:-.02em}
+.work-head p{font-size:15px;color:var(--cream-muted);max-width:30ch;line-height:1.6}
+.work-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:clamp(20px,3vw,42px)}
+.work-card{cursor:none;display:block}
+.work-card:nth-child(odd){margin-top:0}
+.work-card:nth-child(even){margin-top:clamp(0px,7vw,90px)}
+.wc-frame{position:relative;aspect-ratio:16/11;border-radius:6px;overflow:hidden;
+  border:1px solid var(--line-dark);background:#0f1a2e}
+.wc-visual{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;
+  align-items:center;gap:16px;padding:30px;transition:transform .9s var(--ease)}
+.work-card:hover .wc-visual{transform:scale(1.04)}
+.wc-visual .wv-name{font-family:var(--f-serif);font-size:clamp(1.8rem,4vw,3rem);font-weight:500;letter-spacing:-.02em}
+.wc-visual .wv-tag{font-size:11px;letter-spacing:.28em;text-transform:uppercase;opacity:.7}
+.wc-shot{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top center;z-index:1;
+  transition:transform .9s var(--ease)}
+.work-card:hover .wc-shot{transform:scale(1.04)}
+.wc-bar{position:absolute;top:0;left:0;right:0;height:34px;background:rgba(0,0,0,.22);
+  display:flex;align-items:center;gap:6px;padding:0 14px;z-index:2}
+.wc-bar i{width:8px;height:8px;border-radius:50%;background:rgba(247,244,239,.35)}
+.wc-live{position:absolute;top:44px;right:16px;z-index:3;font-size:10.5px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--paper);background:rgba(0,0,0,.32);
+  padding:6px 11px;border-radius:100px;display:flex;align-items:center;gap:7px}
+.wc-live::before{content:'';width:7px;height:7px;border-radius:50%;background:#39d98a;
+  box-shadow:0 0 0 0 rgba(57,217,138,.6);animation:pulse 2s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(57,217,138,.5)}70%{box-shadow:0 0 0 8px rgba(57,217,138,0)}100%{box-shadow:0 0 0 0 rgba(57,217,138,0)}}
+.wc-meta{display:flex;justify-content:space-between;align-items:baseline;margin-top:20px;gap:20px}
+.wc-meta h3{font-family:var(--f-serif);font-weight:400;font-size:clamp(1.4rem,2.6vw,2rem);
+  letter-spacing:-.01em;color:var(--paper)}
+.wc-meta .wc-sector{font-size:13px;color:var(--cream-muted)}
+.wc-meta .wc-arrow{font-size:20px;color:var(--terra);transition:transform .5s var(--ease)}
+.work-card:hover .wc-arrow{transform:translate(4px,-4px)}
+.wc-year{font-size:12px;color:var(--muted-2);margin-top:6px;letter-spacing:.05em}
+
+/* project visual themes */
+.v-reformes{background:linear-gradient(135deg,#1a1a1a 0%,#2b2622 100%);color:#E8A15C}
+.v-tallers{background:linear-gradient(135deg,#0a0a0a 0%,#1c1410 100%);color:#E8620A}
+.v-trg{background:linear-gradient(135deg,#0C1526 0%,#13233d 100%);color:#3B82F6}
+.v-voltara{background:linear-gradient(135deg,#080D14 0%,#111d2b 100%);color:#F0A500}
+
+/* single featured project */
+.work-single{display:block;cursor:none}
+.ws-img{position:relative;border-radius:8px;overflow:hidden;border:1px solid var(--line-dark);
+  box-shadow:0 30px 80px rgba(0,0,0,.4);background:#0f1a2e}
+.ws-img img{width:100%;display:block;transition:transform 1s var(--ease)}
+.work-single:hover .ws-img img{transform:scale(1.02)}
+.ws-img .wc-live{top:18px;right:18px}
+.ws-meta{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;margin-top:28px;flex-wrap:wrap}
+.ws-tag{font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--terra);display:block;margin-bottom:12px}
+.ws-meta h3{font-family:var(--f-serif);font-weight:400;font-size:clamp(1.8rem,3.4vw,2.8rem);color:var(--paper);letter-spacing:-.015em}
+.ws-cta{font-size:15px;font-weight:600;color:var(--terra);white-space:nowrap;display:inline-flex;align-items:center;gap:8px}
+.ws-cta em{font-style:normal;transition:transform .5s var(--ease)}
+.work-single:hover .ws-cta em{transform:translate(4px,-4px)}
+
+/* ============================================================
+   PROCESS
+   ============================================================ */
+#proces{background:var(--paper);color:var(--ink)}
+.proc-top{display:grid;grid-template-columns:1fr 1fr;gap:clamp(30px,5vw,80px);align-items:end;margin-bottom:clamp(50px,7vw,90px)}
+.proc-top h2{font-family:var(--f-serif);font-weight:400;font-size:clamp(2rem,5.4vw,4rem);
+  line-height:1.02;letter-spacing:-.02em}
+.proc-top h2 em{font-style:italic;color:var(--terra);font-weight:300}
+.proc-top .p-lead{font-size:16px;color:var(--muted);line-height:1.65;max-width:42ch}
+.proc-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);
+  border:1px solid var(--line)}
+.proc-step{background:var(--paper);padding:clamp(24px,2.6vw,36px) clamp(20px,2vw,30px);min-height:230px;
+  display:flex;flex-direction:column;justify-content:space-between;transition:background .5s var(--ease)}
+.proc-step:hover{background:var(--cream-2)}
+.proc-step .ps-num{font-family:var(--f-serif);font-size:15px;color:var(--terra)}
+.proc-step h4{font-family:var(--f-serif);font-weight:400;font-size:clamp(1.2rem,1.7vw,1.5rem);
+  line-height:1.1;margin-top:auto}
+.proc-step p{font-size:13.5px;color:var(--muted);line-height:1.55;margin-top:12px}
+
+/* stats band */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);
+  border-top:1px solid var(--line);margin-top:clamp(50px,7vw,90px)}
+.stat{background:var(--paper);padding:clamp(30px,4vw,56px) clamp(20px,2vw,34px)}
+.stat .st-n{font-family:var(--f-serif);font-weight:400;font-size:clamp(2.6rem,6vw,4.6rem);
+  line-height:1;letter-spacing:-.02em;color:var(--ink)}
+.stat .st-n small{font-size:.42em;color:var(--terra);vertical-align:super;font-family:var(--f-sans);font-weight:600}
+.stat .st-l{font-size:13.5px;color:var(--muted);margin-top:14px;line-height:1.5;max-width:24ch}
+
+/* ============================================================
+   TEAM
+   ============================================================ */
+#equip{background:var(--ink-2);color:var(--cream)}
+.team-head{max-width:760px;margin-bottom:clamp(44px,6vw,72px)}
+.team-head h2{font-family:var(--f-serif);font-weight:300;font-size:clamp(1.7rem,4vw,3.2rem);
+  line-height:1.18;letter-spacing:-.015em;color:var(--paper);margin-top:22px}
+.team-head h2 b{font-weight:500}
+.team-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(20px,3vw,40px)}
+.team-card{border:1px solid var(--line-dark);border-radius:6px;padding:clamp(28px,3vw,44px);
+  display:flex;flex-direction:column;gap:20px;transition:border-color .5s var(--ease),background .5s var(--ease)}
+.team-card:hover{border-color:rgba(217,113,78,.4);background:rgba(217,113,78,.04)}
+.tc-top{display:flex;justify-content:space-between;align-items:flex-start}
+.tc-init{font-family:var(--f-serif);font-size:clamp(3rem,6vw,5rem);line-height:.8;color:var(--paper);font-weight:400}
+.tc-role{font-size:11.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--terra);text-align:right;padding-top:8px}
+.team-card h3{font-family:var(--f-serif);font-weight:400;font-size:clamp(1.5rem,2.4vw,2rem);color:var(--paper)}
+.team-card p{font-size:14px;color:var(--cream-muted);line-height:1.6;max-width:40ch}
+
+/* ============================================================
+   CONTACT / CTA
+   ============================================================ */
+#contacte{background:var(--terra);color:var(--paper);overflow:hidden;position:relative}
+.cta-rings{position:absolute;bottom:-30%;left:-8%;width:min(52vw,640px);opacity:.16;pointer-events:none}
+.cta-rings svg{width:100%}
+.cta-rings circle{fill:none;stroke:var(--paper);stroke-width:1}
+.cta-inner{position:relative;z-index:2}
+.cta-eyebrow{color:var(--paper);opacity:.85}
+.cta-eyebrow::before{background:var(--paper)}
+.cta-h{font-family:var(--f-serif);font-weight:400;font-size:clamp(3rem,10vw,9rem);line-height:.94;
+  letter-spacing:-.03em;margin:20px 0 34px}
+.cta-h .it{font-style:italic;font-weight:300}
+.cta-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(30px,5vw,80px);margin-top:40px;align-items:start}
+.cta-lead{font-size:clamp(16px,1.5vw,20px);line-height:1.6;max-width:38ch;opacity:.92}
+.cta-mail{display:inline-flex;align-items:center;gap:14px;font-family:var(--f-serif);
+  font-size:clamp(1.3rem,2.6vw,2.1rem);margin-top:26px;border-bottom:1px solid rgba(247,244,239,.4);
+  padding-bottom:6px;transition:gap .4s var(--ease),border-color .4s}
+.cta-mail:hover{gap:22px;border-color:var(--paper)}
+
+/* form */
+.cta-form{display:flex;flex-direction:column;gap:18px}
+.cta-form .row{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.cta-form label{display:block}
+.cta-form .fl{font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;opacity:.75;margin-bottom:8px;display:block}
+.cta-form input,.cta-form textarea{width:100%;background:transparent;border:none;
+  border-bottom:1px solid rgba(247,244,239,.4);color:var(--paper);font-family:var(--f-sans);
+  font-size:16px;padding:8px 0;transition:border-color .4s}
+.cta-form input::placeholder,.cta-form textarea::placeholder{color:rgba(247,244,239,.5)}
+.cta-form input:focus,.cta-form textarea:focus{outline:none;border-color:var(--paper)}
+.cta-form textarea{resize:none;min-height:60px}
+.cta-form button{margin-top:12px;background:var(--ink);color:var(--paper);border:none;
+  font-family:var(--f-sans);font-weight:600;font-size:14px;letter-spacing:.02em;
+  padding:17px 30px;border-radius:100px;cursor:none;align-self:flex-start;
+  transition:background .4s var(--ease),transform .4s var(--ease)}
+.cta-form button:hover{background:var(--ink-2);transform:translateY(-2px)}
+.hp{position:absolute;left:-9999px}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+footer{background:var(--ink-2);color:var(--cream);padding:clamp(50px,7vw,90px) var(--pad) 34px}
+.foot-top{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:40px;
+  padding-bottom:clamp(40px,5vw,60px);border-bottom:1px solid var(--line-dark)}
+.foot-logo{display:flex;align-items:center;gap:14px;font-family:var(--f-serif);font-size:28px;color:var(--paper);margin-bottom:20px}
+.foot-logo svg{width:46px;height:31px;overflow:visible}
+.foot-logo svg circle{fill:none;stroke-width:5.5}
+.foot-brand p{font-size:14px;color:var(--cream-muted);max-width:34ch;line-height:1.6}
+.foot-col h5{font-size:11.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted-2);margin-bottom:18px}
+.foot-col a,.foot-col span{display:block;font-size:14.5px;color:var(--cream-muted);
+  margin-bottom:11px;transition:color .3s}
+.foot-col a:hover{color:var(--paper)}
+.foot-bot{display:flex;justify-content:space-between;align-items:center;gap:20px;
+  padding-top:26px;flex-wrap:wrap}
+.foot-bot p{font-size:12.5px;color:var(--muted-2)}
+.foot-bot .fb-links{display:flex;gap:22px}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width:1000px){
+  .work-grid{grid-template-columns:1fr}
+  .work-card:nth-child(even){margin-top:0}
+  .proc-top{grid-template-columns:1fr}
+  .proc-steps{grid-template-columns:repeat(2,1fr)}
+  .cta-grid{grid-template-columns:1fr}
+  .team-grid{grid-template-columns:1fr}
+  .foot-top{grid-template-columns:1fr 1fr}
+  .foot-brand{grid-column:1/-1}
+}
+@media (max-width:640px){
+  body{cursor:auto}
+  .nav-menu,.nav-cta{display:none}
+  .nav-burger{display:flex;flex-direction:column;gap:5px;cursor:pointer;padding:6px}
+  .nav-burger i{width:26px;height:2px;background:var(--paper);display:block;transition:.3s}
+  .nav.solid .nav-burger i{background:var(--paper)}
+  .hero-rings{opacity:.5;right:-30vw}
+  .hero-sub{flex-direction:column;align-items:flex-start;gap:24px}
+  .serv-item{grid-template-columns:44px 1fr;gap:14px}
+  .serv-item .s-tags{display:none}
+  .serv-item:hover .s-desc{max-height:200px}
+  .stats{grid-template-columns:1fr}
+  .proc-steps{grid-template-columns:1fr}
+  .stats,.proc-step{min-height:auto}
+  .foot-top{grid-template-columns:1fr}
+  .cta-form .row{grid-template-columns:1fr}
+  #hero{padding-top:120px}
+}
+
+/* mobile menu overlay */
+.m-menu{position:fixed;inset:0;z-index:850;background:var(--ink-2);
+  display:flex;flex-direction:column;justify-content:center;padding:0 var(--pad);gap:6px;
+  transform:translateY(-100%);transition:transform .6s var(--ease);pointer-events:none}
+.m-menu.open{transform:translateY(0);pointer-events:auto}
+.m-menu a{font-family:var(--f-serif);font-size:clamp(2rem,10vw,3.4rem);color:var(--paper);
+  padding:10px 0;border-bottom:1px solid var(--line-dark)}
+.m-menu a:last-child{color:var(--terra);border:none}
+</style>
+</head>
+<body>
+
+<!-- Custom cursor -->
+<div class="cursor"></div>
+<div class="cursor-ring"></div>
+
+<!-- Nav -->
+<nav class="nav">
+  <a href="#hero" class="nav-logo" data-cur>
+    <svg viewBox="0 0 76 52"><circle cx="26" cy="26" r="21" stroke="#F7F4EF"/><circle cx="50" cy="26" r="21" stroke="#D9714E"/></svg>
+    Nexum
+  </a>
+  <div class="nav-right">
+    <div class="nav-menu">
+      <a href="#serveis" data-cur>Serveis</a>
+      <a href="#work" data-cur>Projectes</a>
+      <a href="#proces" data-cur>Procés</a>
+      <a href="#equip" data-cur>Estudi</a>
+    </div>
+    <a href="#contacte" class="nav-cta" data-cur>Parlem</a>
+  </div>
+  <div class="nav-burger" id="burger"><i></i><i></i></div>
+</nav>
+
+<!-- Mobile menu -->
+<div class="m-menu" id="mmenu">
+  <a href="#serveis" data-m>Serveis</a>
+  <a href="#work" data-m>Projectes</a>
+  <a href="#proces" data-m>Procés</a>
+  <a href="#equip" data-m>Estudi</a>
+  <a href="#contacte" data-m>Parlem →</a>
+</div>
+
+<!-- ===================== HERO ===================== -->
+<header id="hero">
+  <div class="hero-grain"></div>
+  <div class="hero-rings">
+    <svg viewBox="0 0 200 130">
+      <circle class="hr" cx="68" cy="65" r="60" stroke="#F7F4EF"/>
+      <circle class="hr" cx="132" cy="65" r="60" stroke="#D9714E"/>
+    </svg>
+  </div>
+  <div class="hero-inner">
+    <div class="hero-top">
+      <span class="eyebrow">Estudi de disseny web</span>
+      <span class="hero-loc">Catalunya · Disponible arreu</span>
+    </div>
+    <h1 class="hero-h">
+      <span class="line-mask"><span class="line-in">La teva web</span></span>
+      <span class="line-mask"><span class="line-in">hauria de <span class="it">vendre.</span></span></span>
+      <span class="line-mask"><span class="line-in">No només existir.</span></span>
+    </h1>
+    <div class="hero-sub">
+      <p class="fade">Dissenyem i desenvolupem webs a mida per a negocis que volen semblar exactament el que són: seriosos, competents i un pas per davant. Entrega en 24 hores.</p>
+      <div class="hero-scroll fade-i"><span class="bar"></span> Descobreix</div>
+    </div>
+  </div>
+</header>
+
+<!-- ===================== MARQUEE ===================== -->
+<div class="marquee">
+  <div class="marquee-track">
+    <span>Disseny a mida</span><span>Desenvolupament</span><span>Entrega en 24h</span><span>Rendiment real</span><span>Identitat</span>
+    <span>Disseny a mida</span><span>Desenvolupament</span><span>Entrega en 24h</span><span>Rendiment real</span><span>Identitat</span>
+  </div>
+</div>
+
+<!-- ===================== MANIFESTO ===================== -->
+<section id="manifest" class="section">
+  <div class="wrap">
+    <span class="eyebrow fade">Per què Nexum</span>
+    <h2 class="manifest-h" style="margin-top:34px">
+      <span class="mw">Un negoci excel·lent</span> <span class="mw">amb una web mediocre</span> <span class="mw">perd clients cada dia.</span> <span class="mw"><b>Nosaltres arreglem exactament això</b></span> <span class="mw">—amb disseny que inspira confiança</span> <span class="mw">i tecnologia que ven per tu.</span>
+    </h2>
+    <div class="manifest-foot">
+      <p class="fade">No fem plantilles genèriques. Cada web és una peça pensada per al teu negoci, la teva marca i els teus clients.</p>
+      <span class="eyebrow fade">Est. 2026</span>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== SERVICES ===================== -->
+<section id="serveis" class="section">
+  <div class="wrap">
+    <div class="serv-head">
+      <h2 class="fade">Què fem</h2>
+      <p class="fade">Tot el que necessita el teu negoci per tenir presència digital de nivell, sense complicacions.</p>
+    </div>
+    <div class="serv-list">
+      <div class="serv-item" data-cur>
+        <span class="s-num">01</span>
+        <div class="s-body">
+          <h3>Disseny web a mida</h3>
+          <div class="s-desc">Cada projecte parteix d'una pàgina en blanc. Definim una direcció visual pròpia per a la teva marca —tipografia, color, ritme— perquè la web no s'assembli a cap altra.</div>
+        </div>
+        <div class="s-tags"><span>UI/UX</span><span>Identitat</span><span>Art direction</span></div>
+      </div>
+      <div class="serv-item" data-cur>
+        <span class="s-num">02</span>
+        <div class="s-body">
+          <h3>Desenvolupament</h3>
+          <div class="s-desc">Codi net i optimitzat. Webs ràpides, segures i que funcionen perfectes a qualsevol dispositiu. Animacions cuidades que donen personalitat sense sacrificar el rendiment.</div>
+        </div>
+        <div class="s-tags"><span>Front-end</span><span>Animacions</span><span>Responsive</span></div>
+      </div>
+      <div class="serv-item" data-cur>
+        <span class="s-num">03</span>
+        <div class="s-body">
+          <h3>Posada en marxa</h3>
+          <div class="s-desc">Ens encarreguem de tot: hosting, domini, formularis de contacte i correu. Tu només ens dónes la informació; nosaltres ho deixem funcionant i llest per rebre clients.</div>
+        </div>
+        <div class="s-tags"><span>Hosting</span><span>Domini</span><span>Formularis</span></div>
+      </div>
+      <div class="serv-item" data-cur>
+        <span class="s-num">04</span>
+        <div class="s-body">
+          <h3>Manteniment</h3>
+          <div class="s-desc">La teva web sempre al dia. Canvis, actualitzacions i millores contínues per una quota mensual reduïda. Sense sorpreses ni lletra petita.</div>
+        </div>
+        <div class="s-tags"><span>Suport</span><span>Actualitzacions</span><span>Millores</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== WORK ===================== -->
+<section id="work" class="section">
+  <div class="wrap">
+    <div class="work-head">
+      <div>
+        <span class="eyebrow fade">Projecte destacat</span>
+        <h2 class="fade" style="margin-top:20px">Feina que parla<br>per si sola.</h2>
+      </div>
+      <p class="fade">Voltara: una web completa que demostra el nostre estàndard de disseny, animació i rendiment.</p>
+    </div>
+    <a href="https://voltara-demo.netlify.app/" target="_blank" rel="noopener" class="work-single fade" data-cur>
+      <div class="ws-img">
+        <img src="assets/fotos/voltara.png" alt="Web de Voltara — energia solar" loading="lazy">
+        <span class="wc-live">Web en viu</span>
+      </div>
+      <div class="ws-meta">
+        <div>
+          <span class="ws-tag">Energia solar · Projecte propi</span>
+          <h3>Voltara</h3>
+        </div>
+        <span class="ws-cta">Veure web en viu <em>↗</em></span>
+      </div>
+    </a>
+  </div>
+</section>
+
+<!-- ===================== PROCESS ===================== -->
+<section id="proces" class="section">
+  <div class="wrap">
+    <div class="proc-top">
+      <h2 class="fade">Ràpid, <em>sense</em><br>fer-ho ràpid.</h2>
+      <p class="p-lead fade">El nostre procés està afinat perquè puguem entregar en 24 hores sense renunciar a res. Menys reunions, menys esperes, més resultats.</p>
+    </div>
+    <div class="proc-steps">
+      <div class="proc-step fade">
+        <span class="ps-num">01</span>
+        <div><h4>Conversa</h4><p>Ens expliques el teu negoci i què necessites. En 15 minuts ho tenim clar.</p></div>
+      </div>
+      <div class="proc-step fade">
+        <span class="ps-num">02</span>
+        <div><h4>Disseny</h4><p>Creem una proposta visual única per a la teva marca. Res de plantilles.</p></div>
+      </div>
+      <div class="proc-step fade">
+        <span class="ps-num">03</span>
+        <div><h4>Desenvolupament</h4><p>Ho construïm, ho optimitzem i ho deixem funcionant en un temps rècord.</p></div>
+      </div>
+      <div class="proc-step fade">
+        <span class="ps-num">04</span>
+        <div><h4>En línia</h4><p>Domini, hosting i correu llestos. La teva web comença a treballar per tu.</p></div>
+      </div>
+    </div>
+    <div class="stats">
+      <div class="stat fade">
+        <div class="st-n">24<small>h</small></div>
+        <div class="st-l">Des de l'aprovació fins a la web en línia.</div>
+      </div>
+      <div class="stat fade">
+        <div class="st-n">350<small>€</small></div>
+        <div class="st-l">Preu tancat, sense sorpreses. Manteniment des de 30€/mes.</div>
+      </div>
+      <div class="stat fade">
+        <div class="st-n">100<small>%</small></div>
+        <div class="st-l">A mida. Cap web nostra s'assembla a una altra.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== TEAM ===================== -->
+<section id="equip" class="section">
+  <div class="wrap">
+    <div class="team-head">
+      <span class="eyebrow fade">L'estudi</span>
+      <h2 class="fade">Som un equip petit i directe. <b>Parles amb qui fa la feina</b>, no amb un intermediari. Això ho fa tot més ràpid, més clar i més bo.</h2>
+    </div>
+    <div class="team-grid">
+      <div class="team-card fade" data-cur>
+        <div class="tc-top">
+          <span class="tc-init">P</span>
+          <span class="tc-role">Disseny &amp; Desenvolupament</span>
+        </div>
+        <h3>Pol Capell</h3>
+        <p>Dissenya i construeix cada web de principi a fi. Obsessionat amb el detall, el rendiment i que cada píxel tingui una raó de ser.</p>
+      </div>
+      <div class="team-card fade" data-cur>
+        <div class="tc-top">
+          <span class="tc-init">M</span>
+          <span class="tc-role">Estratègia &amp; Clients</span>
+        </div>
+        <h3>Marc Vilalta</h3>
+        <p>El pont entre el teu negoci i el projecte. S'assegura que entenem què necessites i que el resultat compleixi de veritat.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== CONTACT ===================== -->
+<section id="contacte" class="section">
+  <div class="cta-rings">
+    <svg viewBox="0 0 200 130"><circle cx="68" cy="65" r="60"/><circle cx="132" cy="65" r="60"/></svg>
+  </div>
+  <div class="wrap cta-inner">
+    <span class="eyebrow cta-eyebrow fade">Comencem</span>
+    <h2 class="cta-h">
+      <span class="line-mask"><span class="line-in">Parlem del</span></span>
+      <span class="line-mask"><span class="line-in">teu <span class="it">projecte.</span></span></span>
+    </h2>
+    <div class="cta-grid">
+      <div>
+        <p class="cta-lead fade">Explica'ns la teva idea. Sense compromís, et donarem una proposta clara i un preu tancat. Normalment responem el mateix dia.</p>
+        <a href="mailto:polcapellb@gmail.com" class="cta-mail" data-cur>polcapellb@gmail.com →</a>
+      </div>
+      <form class="cta-form fade" action="https://formspree.io/f/YOUR_FORMSPREE_ID" method="POST">
+        <input type="text" name="_gotcha" class="hp" tabindex="-1" autocomplete="off">
+        <div class="row">
+          <label><span class="fl">Nom</span><input type="text" name="nom" placeholder="El teu nom" required></label>
+          <label><span class="fl">Negoci</span><input type="text" name="negoci" placeholder="Nom del negoci"></label>
+        </div>
+        <label><span class="fl">Email</span><input type="email" name="email" placeholder="tu@email.com" required></label>
+        <label><span class="fl">Què necessites</span><textarea name="missatge" placeholder="Explica'ns breument el teu projecte..." required></textarea></label>
+        <button type="submit" data-cur>Enviar missatge</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FOOTER ===================== -->
+<footer>
+  <div class="foot-top">
+    <div class="foot-brand">
+      <div class="foot-logo">
+        <svg viewBox="0 0 76 52"><circle cx="26" cy="26" r="21" stroke="#F7F4EF"/><circle cx="50" cy="26" r="21" stroke="#D9714E"/></svg>
+        Nexum <span style="color:var(--terra);font-size:20px;margin-left:-6px">Web</span>
+      </div>
+      <p>Estudi de disseny i desenvolupament web. Creem presència digital que fa créixer negocis.</p>
+    </div>
+    <div class="foot-col">
+      <h5>Navegació</h5>
+      <a href="#serveis" data-cur>Serveis</a>
+      <a href="#work" data-cur>Projectes</a>
+      <a href="#proces" data-cur>Procés</a>
+      <a href="#equip" data-cur>Estudi</a>
+    </div>
+    <div class="foot-col">
+      <h5>Contacte</h5>
+      <a href="mailto:polcapellb@gmail.com" data-cur>polcapellb@gmail.com</a>
+      <a href="#contacte" data-cur>Demana pressupost</a>
+      <span>Catalunya</span>
+    </div>
+  </div>
+  <div class="foot-bot">
+    <p>© 2026 Nexum Web. Tots els drets reservats.</p>
+    <div class="fb-links">
+      <a href="#hero" data-cur>Tornar a dalt ↑</a>
+    </div>
+  </div>
+</footer>
+
+<!-- ===================== SCRIPTS ===================== -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+<script>
+/* ---------- Seguretat: si GSAP no carrega, mostra tot el contingut ---------- */
+if(typeof gsap==='undefined'){
+  document.querySelectorAll('.fade,.fade-i').forEach(e=>{e.style.opacity='1';e.style.transform='none';});
+  document.querySelectorAll('.manifest-h .mw').forEach(e=>e.style.opacity='1');
+}else{
+
+/* ---------- Smooth scroll (Lenis) ---------- */
+let lenis;
+if(window.Lenis){
+  lenis = new Lenis({duration:1.15, easing:t=>Math.min(1,1.001-Math.pow(2,-10*t)), smoothWheel:true});
+  function raf(t){lenis.raf(t); requestAnimationFrame(raf);}
+  requestAnimationFrame(raf);
+  lenis.on('scroll', ()=>{ if(window.ScrollTrigger) ScrollTrigger.update(); });
+}
+/* anchor links -> lenis */
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',e=>{
+    const id=a.getAttribute('href');
+    if(id.length>1){
+      e.preventDefault();
+      const el=document.querySelector(id);
+      if(el){ lenis? lenis.scrollTo(el,{offset:0,duration:1.4}) : el.scrollIntoView({behavior:'smooth'}); }
+      closeMenu();
+    }
+  });
+});
+
+gsap.registerPlugin(ScrollTrigger);
+
+/* ---------- Hero intro (robust: repòs = visible, animem l'entrada) ---------- */
+gsap.timeline({defaults:{ease:'power4.out'}, delay:.15})
+  .from('.hero-top .eyebrow, .hero-loc', {opacity:0, y:14, duration:.7})
+  .from('.hero-h .line-in', {yPercent:110, duration:1.05, stagger:.1}, '-=.35');
+/* rings slow rotate + parallax */
+gsap.to('.hero-rings', {rotate:40, scrollTrigger:{trigger:'#hero',start:'top top',end:'bottom top',scrub:1.2}, ease:'none'});
+gsap.to('.hero-rings', {y:60, scrollTrigger:{trigger:'#hero',start:'top top',end:'bottom top',scrub:1.5}, ease:'none'});
+
+/* ---------- CTA title reveal ---------- */
+gsap.from('.cta-h .line-in',{yPercent:110,duration:1,ease:'power4.out',stagger:.1,
+  scrollTrigger:{trigger:'#contacte',start:'top 75%'}});
+
+/* ---------- Fade-ups ---------- */
+gsap.utils.toArray('.fade').forEach(el=>{
+  gsap.to(el,{opacity:1,y:0,duration:.9,ease:'power3.out',
+    scrollTrigger:{trigger:el,start:'top 90%'}});
+});
+gsap.utils.toArray('.fade-i').forEach(el=>{
+  gsap.to(el,{opacity:1,duration:1,ease:'power2.out',
+    scrollTrigger:{trigger:el,start:'top 92%'}});
+});
+
+/* ---------- Manifesto word reveal ---------- */
+gsap.set('.manifest-h .mw',{opacity:.14});
+gsap.utils.toArray('.manifest-h .mw').forEach((w)=>{
+  gsap.to(w,{opacity:1,ease:'none',
+    scrollTrigger:{trigger:w,start:'top 82%',end:'top 55%',scrub:true}});
+});
+
+/* ---------- Marquee ---------- */
+const track=document.querySelector('.marquee-track');
+if(track){
+  let mx=0;
+  gsap.ticker.add(()=>{
+    mx-=0.6;
+    if(Math.abs(mx)>=track.scrollWidth/2) mx=0;
+    track.style.transform=`translateX(${mx}px)`;
+  });
+}
+
+/* ---------- Work cards reveal ---------- */
+gsap.utils.toArray('.work-card').forEach(card=>{
+  gsap.from(card,{y:60,opacity:0,duration:1,ease:'power3.out',
+    scrollTrigger:{trigger:card,start:'top 90%'}});
+});
+
+/* ---------- Counters ---------- */
+gsap.utils.toArray('.st-n').forEach(el=>{
+  const num=el.childNodes[0];
+  const target=parseInt(num.textContent);
+  const obj={v:0};
+  ScrollTrigger.create({trigger:el,start:'top 85%',once:true,onEnter:()=>{
+    gsap.to(obj,{v:target,duration:1.6,ease:'power2.out',
+      onUpdate:()=>{num.textContent=Math.round(obj.v);}});
+  }});
+});
+
+/* ---------- Nav solid on scroll ---------- */
+const nav=document.querySelector('.nav');
+ScrollTrigger.create({start:'top -60',onUpdate:self=>{
+  nav.classList.toggle('solid', self.scroll()>60);
+}});
+
+/* ---------- Custom cursor ---------- */
+const cur=document.querySelector('.cursor'), ring=document.querySelector('.cursor-ring');
+let mxp=innerWidth/2,myp=innerHeight/2,rxp=mxp,ryp=myp;
+addEventListener('mousemove',e=>{mxp=e.clientX;myp=e.clientY;
+  cur.style.transform=`translate(${mxp}px,${myp}px) translate(-50%,-50%)`;});
+function ringLoop(){rxp+=(mxp-rxp)*.16;ryp+=(myp-ryp)*.16;
+  ring.style.transform=`translate(${rxp}px,${ryp}px) translate(-50%,-50%)`;requestAnimationFrame(ringLoop);}
+ringLoop();
+document.querySelectorAll('[data-cur],a,button').forEach(el=>{
+  el.addEventListener('mouseenter',()=>document.body.classList.add('cur-hover'));
+  el.addEventListener('mouseleave',()=>document.body.classList.remove('cur-hover'));
+});
+/* dark cursor over light sections */
+['#manifest','#serveis','#proces','#contacte'].forEach(sel=>{
+  const s=document.querySelector(sel);
+  if(!s)return;
+  ScrollTrigger.create({trigger:s,start:'top 50%',end:'bottom 50%',
+    onToggle:self=>document.body.classList.toggle('cur-dark',self.isActive)});
+});
+
+/* ---------- Magnetic buttons ---------- */
+document.querySelectorAll('.nav-cta,.cta-form button,.cta-mail').forEach(btn=>{
+  btn.addEventListener('mousemove',e=>{
+    const r=btn.getBoundingClientRect();
+    const x=e.clientX-r.left-r.width/2, y=e.clientY-r.top-r.height/2;
+    gsap.to(btn,{x:x*.3,y:y*.3,duration:.5,ease:'power3.out'});
+  });
+  btn.addEventListener('mouseleave',()=>gsap.to(btn,{x:0,y:0,duration:.6,ease:'elastic.out(1,.4)'}));
+});
+
+/* ---------- Mobile menu ---------- */
+const burger=document.getElementById('burger'), mmenu=document.getElementById('mmenu');
+function closeMenu(){mmenu.classList.remove('open');burger.classList.remove('x');document.body.style.overflow='';}
+if(burger){
+  burger.addEventListener('click',()=>{
+    const open=mmenu.classList.toggle('open');
+    burger.classList.toggle('x',open);
+    document.body.style.overflow=open?'hidden':'';
+  });
+}
+
+/* ---------- Form feedback ---------- */
+const form=document.querySelector('.cta-form');
+if(form){
+  form.addEventListener('submit',async e=>{
+    e.preventDefault();
+    const btn=form.querySelector('button'); const orig=btn.textContent;
+    if(form.action.includes('YOUR_FORMSPREE_ID')){
+      btn.textContent='Configura Formspree primer'; setTimeout(()=>btn.textContent=orig,2500); return;
+    }
+    btn.textContent='Enviant...';
+    try{
+      const r=await fetch(form.action,{method:'POST',body:new FormData(form),headers:{Accept:'application/json'}});
+      if(r.ok){btn.textContent='Rebut. Gràcies ✓';form.reset();}
+      else btn.textContent='Error, torna-ho a provar';
+    }catch{btn.textContent='Error, torna-ho a provar';}
+    setTimeout(()=>btn.textContent=orig,3500);
+  });
+}
+} /* fi del bloc: GSAP carregat correctament */
+</script>
+</body>
+</html>
